@@ -38,11 +38,11 @@ It is useful for quickly provisioning a development or testing environment on a 
 
 ## 🛠️ Prerequisites
 
-- An EC2 instance running Ubuntu (e.g., 20.04)
+- An EC2 instance running Ubuntu 
 - SSH access via a `.pem` key
 - Ansible installed on your control machine (the machine from which you run Ansible)
 
-Install Ansible (if not already):
+Install Ansible :
 
 ```bash
 sudo apt update && sudo apt install ansible -y
@@ -125,16 +125,7 @@ GitHub: [shashibabu123](https://github.com/shashibabu123)
 
 ---
 
-## 📄 License
 
-MIT License – feel free to use and adapt.
-
-```
-
----
-
-Would you like me to auto-generate a `setup.yml` and `inventory.ini` sample content as well to include in the repo?
-```
 
 
 # OUTPUT OF MY TASK
