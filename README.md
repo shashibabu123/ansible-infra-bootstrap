@@ -163,7 +163,7 @@ PLAY RECAP *********************************************************************
 3.89.33.41                 : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 # STEP:-5
-root@ip-172-31-27-254:~/ansible-ec2-setup# mysql --version && psql --version && curl localhost     
+root@ip-172-31-27-254:~/ansible-ec2-setup# mysql --version && psql --version && curl localhost   && sudo ss -tulnp | grep 3306 &&   sudo ss -tulnp | grep 5432 
 
 mysql  Ver 8.0.41-0ubuntu0.24.04.1 for Linux on x86_64 ((Ubuntu))
 psql (PostgreSQL) 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
@@ -190,8 +190,19 @@ Commercial support is available at
 <p><em>Thank you for using nginx.</em></p>
 </body>
 </html>
-root@ip-172-31-27-254:~/ansible-ec2-setup# ls
-inventory.ini  setup.yml
-root@ip-172-31-27-254:~/ansible-ec2-setup# Read from remote host ec2-3-89-33-41.compute-1.amazonaws.com: Connection reset by peer
-Connection to ec2-3-89-33-41.compute-1.amazonaws.com closed.
-client_loop: send disconnect: Connection reset by peer
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+tcp   LISTEN 0      151               0.0.0.0:3306       0.0.0.0:*    users:(("mysqld",pid=7158,fd=23))
+tcp   LISTEN 0      70              127.0.0.1:33060      0.0.0.0:*    users:(("mysqld",pid=7158,fd=21))
+tcp   LISTEN 0      200               0.0.0.0:5432       0.0.0.0:*    users:(("postgres",pid=7247,fd=6))
+tcp   LISTEN 0      200                  [::]:5432          [::]:*    users:(("postgres",pid=7247,fd=7))
+
