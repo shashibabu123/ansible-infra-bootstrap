@@ -1,0 +1,46 @@
+---
+- name: Setup EC2 with MySQL, PostgreSQL, and Nginx
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Enable and start MySQL
+      systemd:
+        name: mysql
+        enabled: true
+        state: started
+
+    - name: Install PostgreSQL
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - postgresql
+        - postgresql-contrib
+
+    - name: Enable and start PostgreSQL
+      systemd:
+        name: postgresql
+        enabled: true
+        state: started
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Enable and start Nginx
+      systemd:
+        name: nginx
+        enabled: true
+        state: started
+
