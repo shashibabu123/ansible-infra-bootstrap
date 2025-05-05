@@ -19,6 +19,15 @@
         enabled: true
         state: started
 
+    - name: Configure MySQL to listen on all interfaces
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+        state: present
+        backup: yes
+      notify: Restart MySQL
+
     - name: Install PostgreSQL
       apt:
         name: "{{ item }}"
@@ -33,6 +42,24 @@
         enabled: true
         state: started
 
+    - name: Configure PostgreSQL to listen on all addresses
+      lineinfile:
+        path: /etc/postgresql/16/main/postgresql.conf
+        regexp: '^#?listen_addresses'
+        line: "listen_addresses = '*'"
+        state: present
+        backup: yes
+      notify: Restart PostgreSQL
+
+    - name: Allow external connections in pg_hba.conf
+      lineinfile:
+        path: /etc/postgresql/16/main/pg_hba.conf
+        insertafter: '^# IPv4 local connections:'
+        line: "host    all             all             0.0.0.0/0               md5"
+        state: present
+        backup: yes
+      notify: Restart PostgreSQL
+
     - name: Install Nginx
       apt:
         name: nginx
@@ -43,4 +70,15 @@
         name: nginx
         enabled: true
         state: started
+
+  handlers:
+    - name: Restart MySQL
+      systemd:
+        name: mysql
+        state: restarted
+
+    - name: Restart PostgreSQL
+      systemd:
+        name: postgresql
+        state: restarted
 
