@@ -123,6 +123,15 @@ ansible-ec2-setup/
 │   └── nginx/
 │       └── main.yml
 
+updated in task 2(or this task)
+roles/
+├── docker-swarm/
+│   ├── tasks/
+│   │   └── main.yml
+│   └── templates/
+│       └── docker-compose.yml.j2
+
+
 ```
 
 ---
