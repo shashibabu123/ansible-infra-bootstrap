@@ -3,73 +3,14 @@
   hosts: web
   become: true
 
-  tasks:
-    - name: Update apt packages
-      apt:
-        update_cache: yes
+    #vars:
+    # mysql_root_temp_password: ""
+    #mysql_root_password: "YourSecureRootPassword"
 
-    - name: Install MySQL
-      apt:
-        name: mysql-server
-        state: present
-
-    - name: Enable and start MySQL
-      systemd:
-        name: mysql
-        enabled: true
-        state: started
-
-    - name: Configure MySQL to listen on all interfaces
-      lineinfile:
-        path: /etc/mysql/mysql.conf.d/mysqld.cnf
-        regexp: '^bind-address'
-        line: 'bind-address = 0.0.0.0'
-        state: present
-        backup: yes
-      notify: Restart MySQL
-
-    - name: Install PostgreSQL
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - postgresql
-        - postgresql-contrib
-
-    - name: Enable and start PostgreSQL
-      systemd:
-        name: postgresql
-        enabled: true
-        state: started
-
-    - name: Configure PostgreSQL to listen on all addresses
-      lineinfile:
-        path: /etc/postgresql/16/main/postgresql.conf
-        regexp: '^#?listen_addresses'
-        line: "listen_addresses = '*'"
-        state: present
-        backup: yes
-      notify: Restart PostgreSQL
-
-    - name: Allow external connections in pg_hba.conf
-      lineinfile:
-        path: /etc/postgresql/16/main/pg_hba.conf
-        insertafter: '^# IPv4 local connections:'
-        line: "host    all             all             0.0.0.0/0               md5"
-        state: present
-        backup: yes
-      notify: Restart PostgreSQL
-
-    - name: Install Nginx
-      apt:
-        name: nginx
-        state: present
-
-    - name: Enable and start Nginx
-      systemd:
-        name: nginx
-        enabled: true
-        state: started
+  roles:
+    - mysql
+    - postgres
+    - nginx
 
   handlers:
     - name: Restart MySQL

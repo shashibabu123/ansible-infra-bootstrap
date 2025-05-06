@@ -1,0 +1,27 @@
+- name: Install MySQL
+  apt:
+    name: mysql-server
+    state: present
+    update_cache: yes
+
+- name: Enable and start MySQL
+  systemd:
+    name: mysql
+    enabled: true
+    state: started
+
+- name: Configure MySQL to listen on all interfaces
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address'
+    line: 'bind-address = 0.0.0.0'
+    backup: yes
+  notify: Restart MySQL
+
+- name: Install Python MySQL client (PyMySQL)
+  apt:
+    name: python3-pymysql
+    state: present
+    update_cache: yes
+
+
