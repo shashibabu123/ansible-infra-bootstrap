@@ -11,6 +11,7 @@
     - mysql
     - postgres
     - nginx
+    - docker-swarm
 
   handlers:
     - name: Restart MySQL
