@@ -111,9 +111,18 @@ systemctl status nginx
 ## 📂 Project Structure
 
 ```
-ansible-infra-bootstrap/
+ansible-ec2-setup/
+├── README.md
 ├── inventory.ini
-└── setup.yml
+├── setup.yml
+├── roles/
+│   ├── mysql/
+│   │   └── main.yml
+│   ├── postgres/
+│   │   └── main.yml
+│   └── nginx/
+│       └── main.yml
+
 ```
 
 ---
