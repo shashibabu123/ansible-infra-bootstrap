@@ -204,3 +204,111 @@ inventory.ini  setup.yml
 root@ip-172-31-27-254:~/ansible-ec2-setup# Read from remote host ec2-3-89-33-41.compute-1.amazonaws.com: Connection reset by peer
 Connection to ec2-3-89-33-41.compute-1.amazonaws.com closed.
 client_loop: send disconnect: Connection reset by peer
+
+Here is an updated `README.md` documentation tailored for your project, assuming it includes Ansible roles for setting up infrastructure with Grafana, Promtail, and possibly Loki:
+
+---
+
+```markdown
+# Ansible Infra Bootstrap with Grafana Integration
+
+This repository contains an Ansible-based infrastructure bootstrap setup that includes monitoring with Grafana and Promtail. It is designed to be used on Ubuntu-based EC2 instances or virtual machines.
+
+## 🔧 Project Structure
+
+```
+
+ansible-infra-bootstrap/
+├── inventory.ini/
+│                # Inventory file with target EC2 IPs
+├── roles/
+│   ├── logging/
+│   │   ├── tasks/             # Tasks to install and configure Promtail
+│   │   └── templates/         # promtail-config.yml, etc.
+│   └── grafana/
+│       ├── tasks/             # Install and configure Grafana
+│       └── templates/         # Optional Grafana config files
+├── playbook.yml               # Main Ansible playbook
+└── README.md                  # This documentation
+
+````
+
+## 🚀 Features
+
+- Installs and configures:
+  - Docker and Docker Compose
+  - Promtail for log shipping
+  - Grafana for log and metrics visualization
+- Auto-detects Docker containers and reads their logs from `/var/lib/docker/containers/*/*.log`
+- Uses Promtail to ship logs to a Loki server or another Grafana-compatible backend
+
+## 📦 Requirements
+
+- Ansible installed on your control machine (`pip install ansible`)
+- Ubuntu-based EC2 instance(s) or VM(s)
+- SSH access to the instances
+
+## 🛠️ Usage
+
+### 1. Update Inventory
+
+Edit `inventory/hosts.ini` and add your server IP:
+```ini
+[logging]
+your-server-ip ansible_user=ubuntu
+````
+
+### 2. Run the Playbook
+
+```bash
+ansible-playbook -i inventory/hosts.ini playbook.yml
+```
+
+### 3. Access Grafana
+
+Once setup is complete, Grafana will be running on:
+
+```
+http://your-server-ip:3000
+```
+
+* Default credentials:
+
+  * **Username:** `admin`
+  * **Password:** `admin` (change on first login)
+
+### 4. Add Loki as a Data Source (if using remote Loki)
+
+If you're using an external Loki instance:
+
+* Go to **Grafana > Configuration > Data Sources**
+* Choose **Loki** and configure the URL (e.g., `http://localhost:3100` or remote endpoint)
+
+## 📁 Promtail Configuration Template
+
+Located at `roles/logging/templates/promtail-config.yml.j2`. It is set to collect logs from:
+
+```yaml
+/var/lib/docker/containers/*/*.log
+```
+
+With labels:
+
+```yaml
+job: dockerlogs
+```
+
+## 🧪 Testing Logs
+
+You can test log ingestion by running a container:
+
+```bash
+docker run --rm -d nginx
+```
+
+Then check Grafana Explore tab with query:
+
+```
+{job="dockerlogs"}
+```
+
